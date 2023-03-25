@@ -2,49 +2,75 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tilwind</title>
-    <style>
-      @tailwind base;
-      @tailwind components;
-      @tailwind utilities;
-      .icon-youtube {
-      }
-    </style>
+    <link rel="icon" type="image/png" sizes="32x32" href="public/favicon-32x32.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Frontend Mentor | Intro section with dropdown navigation</title>
   </head>
-  <body class="flex h-screen flex-row justify-center items-center bg-gray-700/10">
-    <div class="w-56 p-4 bg-gray-500 rounded-xl">
-      <div class="flex flex-col">
-        <div class="flex flex-row justify-between">
-          <div
-            class="text-red-500"
-            style="content: url('https://api.iconify.design/mdi/youtube.svg?width=50&color=red')"
-          ></div>
-          <div class="icon YouTube"></div>
-          <div>free</div>
+  <style>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    body * {
+      font-family: 'Epilogue', sans-serif;
+    }
+    @layer components {
+      .btn-register {
+        @apply border-2 border-gray-500 rounded-lg px-3 py-1.5 hover:text-black;
+      }
+      .btn-learnmore {
+        @apply bg-black text-white px-5 py-2 rounded-lg;
+      }
+    }
+  </style>
+  <body>
+    <div class="flex flex-col h-screen">
+      <header
+        class="flex flex-row text-neutral-500 justify-between items-center px-8 py-4"
+        style="background-color: pink"
+      >
+        <nav class="flex flex-row">
+          <div class="hover:text-black">Features</div>
+          <img src="./" alt="" />
+          <div class="">Company</div>
+          <div>Careers</div>
+          <div>About</div>
+        </nav>
+        <div class="flex">
+          <div>Login</div>
+          <div class="btn-register">Register</div>
         </div>
-        <div class="flex flex-row" style="background-color: #ff01">
-          <div class="flex flex-col">
-            <div>Location</div> 
-            <div>YouTube</div>
+      </header>
+      <main class="flex flex-row container mx-auto">
+        <div class="flex flex-col">
+          <div class="flex flex-col w-1/2 h-full justify-center items-start gap-y-12">
+            <div class="text-6xl font-bold">Make remote work</div>
+            <div class="text-lg">
+              Get your team in sync, no matter your location. Streamline processes, create team
+              rituals, and watch productivity soar.
+            </div>
+            <div class="btn-learnmore">Learn more</div>
+          </div>
+          <div class="flex flex-row w-full gap-x-4 justify-start gap-y-4">
+            <img class="h-6" src="public/client-audiophile.svg" alt="" />
+            <img class="h-6" src="public/client-databiz.svg" alt="" />
+            <img class="h-6" src="public/client-maker.svg" alt="" />
+            <img class="h-6" src="public/client-meet.svg" alt="" />
           </div>
         </div>
-        <div class='flex flex-row justify-between' style="background-color: #f0f1">
-        <div class="flex flex-col">
-          <div>Rating</div>
-          <div>4.5</div>
-        </div>
-        <div class="flex flex-col">
-          <div>Size</div>
-          <div>256</div>
-          <div class="flex flex-col">
-            <div>Download</div>
-            <div>5m</div>
-            <div class="flex flex-row" style="background-color: #ff01">icon 30 Mb / Sec</div>
+        <div class="flex flex-col w-1/2">
+          <div class="overflow-hidden h-full">
+            <img
+              class="w-full h-full object-contain"
+              src="./images/image-hero-desktop.png"
+              alt=""
+            />
           </div>
         </div>
-      </div>
+      </main>
     </div>
   </body>
 </html>
