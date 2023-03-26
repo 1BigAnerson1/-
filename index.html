@@ -11,7 +11,8 @@
       @tailwind utilities;
     </style>
   </head>
-  <body class="bg-blue-900 text-white">
+  <body>
+  <div class="bg-blue-900 text-white">
   <header class="container mx-auto">
     <div class="flex justify-between pt-10">
       <span class="font-bold text-5xl">Ford Shelby 2024</span>
@@ -26,13 +27,20 @@
     </div>
   </header>
 
-  <main class="container mx-auto py-9">
+  <main class="container flex h-full flex-row gap-x-4 mx-auto py-9">
+
     <div>
     <img src="public/2024-Shelby-GT500-by-hycade-Ford-Mustang-main.jpg" height="600"
                                     width="800"/>
     </div>
-    <div ...></div> <!--меню с боку от изображения -->
+    <div class="w-60 h-90 bg-blue-700 object-none object-right ">
+      <div><h1 class="font-bold text-4xl text-indigo">New</h1></div>
+      <div><h3 class="font-bold text-2xl">who is cooler, a car with an internal combustion engine, or an electric car?</h3></div>
+      <div><p class="text underline">given the number of filling stations in relation to charging stations, the conclusion is obvious...</p></div><!--меню с боку от изображения -->
+     <div><h3 class="font-bold text-2xl">why is it easier to get out of a skid on a front-wheel drive?</h3></div>
+    </div>
   </main>
+
   <main class="container flex h-full flex-row mx-auto py-3">
 
     <div class="text-left text-5xl font-bold">You love muscle cars?</div>
