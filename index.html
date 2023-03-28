@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
     <title>Vite App</title>
     <style>
       @tailwind base;
@@ -11,12 +12,44 @@
       @tailwind utilities;
     </style>
   </head>
-  <body class="flex flex bg-teal-100/50 grid place-items-center p-12">
-    <div class="container flex flex-row w-full h-full w-full h-full bg-gray-100 rounded-3xl">
-<aside class="flex flex-col min-w-[144px] bg-red-500">Menu
-
+  <body class="bg-teal-100/50 w-screen grid place-items-center p-12">
+    <div class="container flex flex-row w-full h-full  bg-gray-100 rounded-3xl">
+<aside class="flex flex-col min-w-[144px]">
+  <div class="flex flex-row items-center">
+    <i class='iconify-inline text-teal-700 text-3xl
+    data-icon="carbon:logo-youtube"</i>
+    <span class="font-bold text-xl">Taski</span>
+    </div>
 </aside>
       <main class="flex flex-col bg-gray-50 rounded-2xl w-full">Content</main>
+<div class="flex flex-row">
+      <span class="text-lg font-bold">Team tasks</span>
+  </div>
+      <span class="">Search</span>
+      <button class="px-4 py-2 bg-teal-600 rounded-full "
+      <span class="flex flex-row gap-x-4">+Create Task</span>
+<div class="flex flex-row justyfy-between items-center py-2"...>
+<div class="flex flex-row justyfu-between items-center"...>
+<div class="flex flex-row justyfu-between gap-x-4 h-full"...>
+<div class="flex flex-col h-full w-full bg-gray-200">1</div>
+<div class="flex flex-col">2</div>
+<div class="flex flex-col">3</div>
+</div>
+  </main>
+
+
+     <main class="flex flex-col bg-gray-50 rounded-2xl px-4 gap-y-2">Content</main>
+
+<div class="flex flex-row">
+      <span class="text-lg font-bold">Team tasks</span>
+  </div>
+      <span class="">Search</span>
+      <button class="px-4 py-2 bg-teal-600 rounded-full "
+      <span class="text-xs text-neutral-400">Sort by</span>
+      <span class="text-xs text-neutral-400">Group by Status</span>
+</div>
+  </main>
+<div class="flex flex-row"></div>
 
     </div>
   </body>
