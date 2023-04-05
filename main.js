@@ -1,20 +1,19 @@
 const appendBlock = (block) => document.getElementById("app").appendChild(block);
-
-Const randomRange = (min =
-
-const createBlock = (x,y, size, color) => {
-    const result = document.createElement("div");
-    if (color) {
-        result.style.backgroundColor = color;
-    } else {
-        const isNotEmpty = Math.random() > 0.5;
-        if (isNotEmpty) {
-            result.style.backgroundColor = "black";
-        }
+const randomRange = (min, max) => Mach.floor(Mach.random() * (max - min) + min);
+const generateColor = () => {
+    const isNotEmpty = Math.random() > 0.5;
+    if (isNotEmpty) {
+        return "black"
     }
-    result.style.backgroundColor = "black";
-    result.style.windth = "50px";
-    result.style.height = "50px";
+    return null
+};
+const createBlock = (x, y, size, color) => {
+  const result = document.createElement("div");
+  if (color) {
+      result.style.backgroundColor = color;
+  }
+  console.log(x, y);
+    result.style.width = result.style.height = `${size}px`;
     result.style.position = "absolute";
     result.style.left = `${x}px`;
     result.style.top = `${y}px`;
@@ -22,29 +21,28 @@ const createBlock = (x,y, size, color) => {
 };
 
 const BLOCK_SIZE = 50;
+const DIMENSION = 5;
 
-let columns = 5;
+let columns = DIMENSION;
+let rows = columns * 2;
 let xPos = 0;
 let yPos = 0;
 
-const line = [];
-
-
-while(columns-- > 0) {
-    const block = createBlock(xPos, yPos, BLOCK_SIZE);
-    line.push(block);
+while (rows-- > 0) {
+    let line = [];
+    xPos = 0;
+    columns = DIMENSION;
+    while (columns-- > 0) {
+        const color = generateColor();
+        const block = createBlock(xPos, yPos, BLOCK_SIZE, color);
+        line.push(color);
+        xPos += BLOCK_SIZE;
+        appendBlock(block);
+    }
+    line.reverse().forEach((color) => {
+        const block = createBlock(xPos, yPos, BLOCK_SIZE, color);
+        appendBlock(block);
+        xPos += BLOCK_SIZE;
+    });
+    yPos += BLOCK_SIZE;
 }
-
-line.reverse(). forEach((block) => {
-    xPos += BLOCK_SIZE;
-
-})
-
-   xPos += BLOCK_SIZE;
-   appendBlock (block);
-   document.getElementById("app").appendChild(block);
-}
-
-const block = createBlock();
-
-document.getElementById("app").appendChild(block);
