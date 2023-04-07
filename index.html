@@ -11,11 +11,11 @@
           class="hidden fixed w-screen h-screen top-0 left-0 bg-black/70 z-10 grid place-items-center"
   >
     <div class="flex flex-col relative min-w-[377px] bg-white p-6 rounded-2xl gap-y-4">
-      <button id="btnCloseCreateTaskPopup">
-        <i
-                class="i-material-symbols-cancel-outline absolute top-6 right-6 text-teal-400 text-2xl"></i>
+
+      <button class="absolute top-4 right-4 " id="btnCloseCreateTaskPopup">
+        <i class="i-material-symbols-cancel-outline block text-teal-400 hover:text-neutral-800 text-2xl leading-none"></i>
         </button>
-      <div class="flex flex-row">
+      <div class="flex flex-row justify-between items-center">
         <span class="text-xl font-bold">Create task</span>
       </div>
       <div class="flex flex-row">
@@ -76,7 +76,7 @@
           <div class="flex flex-col">
             <div class="flex flex-row items-center gap-x-8">
               <span class="text-neutral-400">Search</span>
-              <button class="px-4 py-2 bg-teal-600 rounded-full">
+              <button id="btnCreateTask" class="px-4 py-2 bg-teal-600 rounded-full">
                 <span class="text-white">+ Create Task</span>
               </button>
             </div>

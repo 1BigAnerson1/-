@@ -1,17 +1,17 @@
 import "uno.css";
-import '@unocss/reset/tailwind.css';
+import "@unocss/reset/tailwind.css";
 
-const domBtnCreateTask = document.getElementById('btnCreateTask');
-const domBtnCreateTask = document.getElementById('popupCreateTask');
-const domBtnCreateTaskPopup = document.getElementById('popupCreateTaskpopup');
+const domBtnCreateTask = document.getElementById("btnCreateTask");
+const domPopupCreateTask = document.getElementById("popupCreateTask");
 
-domBtnCreateTask.onclick = (e) => {
-    console.log(e);
-    domBtnCreateTask.classList.remove('hidden');
+
+domBtnCreateTask.onclick = () => {
+    console.log("> domPopupCreateTask.classList", domPopupCreateTask.classList);
+    domPopupCreateTask.classList.remove("hidden");
 
     const domBtnCloseCreateTaskPopup = document.getElementById("btnCloseCreateTaskPopup");
      domBtnCloseCreateTaskPopup.onclick = () => {
-        domBtnCreateTask.classList.add("hidden");
-        domBtnCreateCreateTaskPopup.onclick= null;
+        domPopupCreateTask.classList.add("hidden");
+        domBtnCloseCreateTaskPopup.onclick= null;
     };
 };
