@@ -12,7 +12,7 @@
   >
     <div class="flex flex-col relative min-w-[377px] bg-white p-6 rounded-2xl gap-y-4">
 
-      <button class="absolute top-4 right-4 " id="btnCloseCreateTaskPopup">
+      <button class="absolute top-4 right-4 " data-id="btnCloseCreateTaskPopup">
         <i class="i-material-symbols-cancel-outline block text-teal-400 hover:text-neutral-800 text-2xl leading-none"></i>
         </button>
       <div class="flex flex-row justify-between items-center">
@@ -125,10 +125,11 @@
             <div class="flex flex-row pt-2">
               <div class="flex flex-col justify-start w-full gap-y-4 justify-between">
                 <div
+                        id="templateTask"
                   class="flex flex-row shadow rounded-lg px-3 py-3 bg-neutral-50 border-1 border-neutral-100"
                 >
                   <div class="flex flex-col w-full gap-y-3">
-                    <span data-id="taskTitle" class="font-bold">Layout Design</span>
+                    <span data-id="templateTaskTitle" class="font-bold">Layout Design</span>
                     <div class="flex flex-row justify-between">
                       <div class="flex flex-row gap-x-2">
                         <div
