@@ -1,7 +1,6 @@
 import "uno.css";
 import "@unocss/reset/tailwind.css";
 import DOM from "./src/constants/dom";
-import { randomString } from "./src/utils/stringUtils.js";
 
 const KEY_LOCAL_TASKS = "tasks";
 
@@ -35,30 +34,74 @@ const tasks = rawTasks
 tasks.forEach((taskVO) => renderTask(taskVO));
 console.log("> tasks:", tasks);
 
+const taskOperations = {
+  [DOM.Template.Task.BTN_DELETE]: (taskVO, domTask) => {
+    renderTaskPopup(
+      taskVO,
+      "Confirm delete task?",
+      "Delete",
+      (taskTitle, taskDate, taskTag) => {
+        console.log("> Delete task -> On Confirm", {
+          taskTitle,
+          taskDate,
+          taskTag,
+        });
+        const indexOfTask = tasks.indexOf(taskVO);
+        tasks.splice(tasks.indexOf(taskVO), 1);
+        domTaskColumn.replaceChild(domTask);
+        saveTask();
+      }
+    );
+  },
+  [DOM.Template.Task.BTN_EDIT]: (taskVO, domTask) => {
+    renderTaskPopup(
+      taskVO,
+      "Update task",
+      "Update",
+      (taskTitle, taskDate, taskTag) => {
+        console.log("> Update task -> On Confirm", {
+          taskTitle,
+          taskDate,
+          taskTag,
+        });
+        const indexOfTask = tasks.indexOf(taskVO);
+        tasks.splice(tasks.indexOf(taskVO), 1);
+        domTaskColumn.replaceChild(domTask);
+        saveTask();
+      }
+    );
+  },
+};
+
 domTaskColumn.onclick = (e) => {
   e.stopPropagation();
   console.log("domTaskColumn", e.target);
-  const domTaskSelected = e.target;
-  const taskId = domTaskSelected.dataset.id;
-  if (!taskId) return;
+  const domTaskElement = e.target;
+  const taskBtn = domTaskElement.dataset.btn;
+
+  const isNotTaskBtn = !taskBtn;
+  if (isNotTaskBtn) return;
+
+  const allowedButtons = [
+    DOM.Template.Task.BTN_EDIT,
+    DOM.Template.Task.BTN_DELETE,
+  ];
+  if (!allowedButtons.includes(taskBtn)) return;
+
+  let taskId;
+  let domTask = domTaskElement;
+  do {
+    domTask = domTask.parentNode;
+    taskId = domTask.dataset.id;
+  } while (!taskId);
 
   const taskVO = tasks.find((task) => task.id === taskId);
   console.log("> taskVO:", taskVO);
-  renderTaskPopup(
-    taskVO,
-    "Update task",
-    "Update",
-    (taskTitle, taskDate, taskTag) => {
-      console.log("> Update task -> On Confirm", {
-        taskTitle,
-        taskDate,
-        taskTag,
-      });
-      taskVO.title = taskTitle;
-      domTaskColumn.replaceChild(renderTask(taskVO), e.target);
-      saveTask();
-    }
-  );
+
+  const taskOperation = taskOperations[taskBtn];
+  if (taskOperation) {
+    taskOperation(taskVO, domTask);
+  }
 };
 getDOM(DOM.Button.CREATE_TASK).onclick = () => {
   console.log("> domPopupCreateTask.classList");
@@ -91,7 +134,7 @@ async function renderTaskPopup(
   taskVO,
   popupTitle,
   confirmText,
-  processCallback
+  processDataCallback
 ) {
   const domPopupContainer = getDOM(DOM.Popup.CONTAINER);
   const domSpinner = domPopupContainer.querySelector(".spinner");
@@ -115,7 +158,7 @@ async function renderTaskPopup(
         taskDate,
         taskTags,
       });
-      processCallback(taskTitle, taskDate, taskTags);
+      processDataCallback(taskTitle, taskDate, taskTags);
       onClosePopup();
     },
     onClosePopup
@@ -128,13 +171,14 @@ async function renderTaskPopup(
   // setTimeout(() => {
   domSpinner.remove();
   document.onkeyup = (e) => {
-    if (e.key === "escape") {
+    if (e.key === "Escape") {
       onClosePopup();
     }
   };
   domPopupContainer.append(taskPopupInstance.render());
   // }, 1000);
 }
+
 function saveTask() {
   localStorage.setItem(KEY_LOCAL_TASKS, JSON.stringify(tasks));
 }
