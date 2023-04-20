@@ -22,7 +22,7 @@ class TaskPopup {
   render() {
     const div = document.createElement("div");
     div.innerHTML = `
-      <div class="flex flex-col relative min-w-[377px] bg-white p-6 rounded-2xl gap-y-4">
+      <div data-test-id="task-popup"  class="flex flex-col relative min-w-[377px] bg-white p-6 rounded-2xl gap-y-4">
         <button class="absolute top-4 right-4" data-id="btnClose">
           <i class="i-material-symbols-cancel-outline block text-neutral-400 hover:text-neutral-800 text-2xl"></i>
         </button>
@@ -34,7 +34,7 @@ class TaskPopup {
             <label class="ml-1 text-sm text-neutral-600" for="inpDate">Title: </label>
             <input
               class="bg-neutral-100 p-1.5 rounded w-full border-1 border-neutral-200"
-              id="inpTitle"
+              data-id="inpTitle"
               type="text"
               value = "${this.#taskTitle}"
               placeholder="e.g. Read books"
@@ -81,7 +81,7 @@ class TaskPopup {
 
     const domBtnClose = popup.querySelector('[data-id="btnClose"]');
     const domBtnConfirm = popup.querySelector('[data-id="btnConfirm"]');
-    const domInpTitle = popup.querySelector('[data-id="btnConfirm"]');
+    const domInpTitle = popup.querySelector('[data-id="inpTitle"]');
 
     domBtnClose.onclick = () => {
       domBtnClose.onclick = null;

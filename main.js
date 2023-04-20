@@ -110,7 +110,7 @@ getDOM(DOM.Button.CREATE_TASK).onclick = () => {
     "Create task",
     "Create",
     (taskTitle, taskDate, taskTag) => {
-      console.log("> Create task -> On Confirm");
+      console.log("> Create task -> On Confirm", taskTitle);
       const taskId = `task_${Date.now()}`;
       const taskVO = new TaskVO(taskId, taskTitle, taskDate, taskTag);
 
