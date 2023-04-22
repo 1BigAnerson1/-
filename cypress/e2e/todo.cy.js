@@ -1,17 +1,45 @@
 import DOM from "../../src/constants/dom.js";
-import TaskPopup from "../../src/view/popup/TaskPopup.js";
 
-const SERVER_URL = "http://localhost:5173/";
+const SERVER_URL = "http://localhost:4173/";
 describe("Test Todo Page", () => {
+  const clickOnCreateTaskButton = () =>
+    cy
+      .get(`#${DOM.Button.CREATE_TASK}`)
+      .should("exist")
+      .should("contain.text", "Create Task")
+      .click();
+
+  const createTaskFromPopup = (text) => {
+    const popupTask = cy.get('[data-test-id="task-popup"]');
+
+    popupTask.should("exist").should("be.visible");
+    popupTask
+      .find('[data-id="inpTitle"]')
+      .should("exist")
+      .should("have.value", "")
+      .type(text);
+
+    cy.get('[data-id="btnConfirm"]')
+      .should("exist")
+      .should("contain.text", "Create")
+      .click();
+  };
+
+  const getColumnChildren = () =>
+    cy.get('[data-test-id="task-column"]').should("exist").children();
+
+  const checkNumberOfTaskInColumnMatch = (numberOfTasks) => {
+    getColumnChildren().should("have.length", numberOfTasks + 1);
+  };
+
   beforeEach(() => {
+    cy.visit(SERVER_URL);
+    cy.url().should("include", SERVER_URL);
+
     cy.intercept("/**/TaskPopup**").as("getTaskPopup");
   });
 
-  it.only("user open main page and create task", () => {
-    cy.visit(SERVER_URL);
-
-    cy.url().should("include", SERVER_URL);
-
+  it("user open main page and create task", () => {
     cy.get(`#${DOM.Popup.CONTAINER}`)
       .should("exist")
       .should("have.class", "hidden");
@@ -21,28 +49,12 @@ describe("Test Todo Page", () => {
       .should("have.class", "hidden")
       .find(".spinner");
 
-    cy.get(`#${DOM.Button.CREATE_TASK}`)
-      .should("exist")
-      .should("contain.text", "Create Task")
-      .click();
+    clickOnCreateTaskButton();
 
     cy.wait("@getTaskPopup");
 
-    const popupTask = cy.get('[data-test-id="task-popup"]');
-
     const todoTaskText = "Welcome Task";
-
-    popupTask.should("exist").should("be.visible");
-    popupTask
-      .find('[data-id="inpTitle"]')
-      .should("exist")
-      .should("have.value", "")
-      .type(todoTaskText);
-
-    cy.get('[data-id="btnConfirm"]')
-      .should("exist")
-      .should("contain.text", "Create")
-      .click();
+    createTaskFromPopup(todoTaskText);
 
     cy.get('[data-test-id="task-column"]')
       .should("exist")
@@ -50,5 +62,36 @@ describe("Test Todo Page", () => {
       .should("have.length", 2)
       .first()
       .should("contain.text", todoTaskText);
+  });
+
+  it.only("user create tasks and delete one", () => {
+    const tasks = ["welcome Task", "Read books"];
+    tasks.forEach((text, index) => {
+      clickOnCreateTaskButton();
+      if (index === 0) cy.wait("@getTaskPopup");
+      createTaskFromPopup(text);
+    });
+
+    checkNumberOfTaskInColumnMatch(tasks.length);
+
+    getColumnChildren()
+      .first()
+      .find(`[data-btn="btnDelete"]`)
+      .should("exist")
+      .click();
+
+    const popupTask = cy.get('[data-test-id="task-popup"]');
+    popupTask
+      .find('[data-id="btnConfirm"]')
+      .should("exist")
+      .should("contain.text", "Delete")
+      .click();
+
+    tasks.pop();
+
+    checkNumberOfTaskInColumnMatch(tasks.length);
+    tasks.forEach((text) => {
+      cy.get('[data-test-id="task-column"]').should("contain.text", text);
+    });
   });
 });

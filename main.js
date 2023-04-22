@@ -47,8 +47,8 @@ const taskOperations = {
           taskTag,
         });
         const indexOfTask = tasks.indexOf(taskVO);
-        tasks.splice(tasks.indexOf(taskVO), 1);
-        domTaskColumn.replaceChild(domTask);
+        tasks.splice(indexOfTask, 1);
+        domTaskColumn.removeChild(domTask);
         saveTask();
       }
     );
