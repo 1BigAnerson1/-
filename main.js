@@ -14,7 +14,7 @@ class TaskVO {
     this.id = id;
     this.title = title;
     this.date = date;
-    this.tag = tag;
+    this.tags = tag;
   }
 }
 
@@ -27,6 +27,18 @@ domTemplateTask.removeAttribute("id");
 domTemplateTask.remove();
 
 const rawTasks = localStorage.getItem(KEY_LOCAL_TASKS);
+fetch("http://localhost:3000/tasks")
+  .then((response) => {
+    return response.ok && response.json();
+  })
+  .then((rawTasks) => {
+    if (rawTasks && rawTasks instanceof Object) {
+      console.log("json", rawTasks);
+      const serverTasks = rawTasks.map((json) => TaskVO.fromJSON(json));
+      serverTasks.forEach((taskVO) => renderTask(taskVO));
+      tasks.push(...serverTasks);
+    }
+  });
 
 const tasks = rawTasks
   ? JSON.parse(rawTasks).map((json) => TaskVO.fromJSON(json))
@@ -142,6 +154,7 @@ async function renderTaskPopup(
   domPopupContainer.classList.remove("hidden");
 
   const onClosePopup = () => {
+    document.onkeyup = null;
     domPopupContainer.children[0].remove();
     domPopupContainer.append(domSpinner);
     domPopupContainer.classList.add("hidden");
@@ -168,15 +181,18 @@ async function renderTaskPopup(
     taskPopupInstance.taskTitle = taskVO.title;
   }
 
-  // setTimeout(() => {
-  domSpinner.remove();
-  document.onkeyup = (e) => {
-    if (e.key === "Escape") {
-      onClosePopup();
-    }
-  };
-  domPopupContainer.append(taskPopupInstance.render());
-  // }, 1000);
+  delay(1000).then(() => {
+    console.log("render 1");
+    domSpinner.remove();
+    document.onkeyup = (e) => {
+      if (e.key === "Escape") {
+        onClosePopup();
+      }
+    };
+    domPopupContainer.append(taskPopupInstance.render());
+  });
+
+  console.log("render 0");
 }
 
 function saveTask() {
