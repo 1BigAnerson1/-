@@ -1,5 +1,3 @@
-import { randomString } from "../../utils/stringUtils.js";
-
 class TaskPopup {
   #title;
   #tags;
@@ -14,13 +12,13 @@ class TaskPopup {
     this.#closeCallback = closeCallback;
   }
 
-  #taskTitle = "";
+  #taskTitle = '';
   set taskTitle(value) {
     this.#taskTitle = value;
   }
 
   render() {
-    const div = document.createElement("div");
+    const div = document.createElement('div');
     div.innerHTML = `
       <div data-test-id="task-popup"  class="flex flex-col relative min-w-[377px] bg-white p-6 rounded-2xl gap-y-4">
         <button class="absolute top-4 right-4" data-id="btnClose">
@@ -75,7 +73,7 @@ class TaskPopup {
         </div>
       </div>
     `;
-    console.log("div.firstChild", div.children);
+    console.log('div.firstChild', div.children);
 
     const popup = div.children[0];
 
