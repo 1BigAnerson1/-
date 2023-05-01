@@ -2,51 +2,51 @@ import TaskVO from '../model/vo/TaskVO.js';
 
 class TasksController {
   #model;
-
   constructor(model) {
     this.#model = model;
   }
 
   async retrieveTasks() {
-    this.#model.tasks = await fetch('http://localhost:3000/tasks')
-      .then((response) => response.ok && response.json())
-      .then((rawTasks) => {
-        if (rawTasks && rawTasks instanceof Array) {
-          console.log('json', rawTasks);
-          return rawTasks.map((json) => TaskVO.fromJSON(json));
-        } else {
-          window.alert('Problem with data parsing, try refresh later');
+    try {
+      this.#model.tasks = await fetch('http://localhost:3000/tasks')
+        .then((response) => response.ok && response.json())
+        .then((rawTasks) => {
+          if (rawTasks && rawTasks instanceof Array) {
+            console.log('json', rawTasks);
+            return rawTasks.map((json) => TaskVO.fromJSON(json));
+          } else {
+            window.alert('Problem with data parsing, try refresh later');
+            return [];
+          }
+        })
+        .catch((e) => {
+          window.alert('Server error:' + e.toString());
           return [];
+        });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  deleteTask(taskId) {
+    console.log('> TasksController -> deleteTask: taskId =', taskId);
+    return fetch(`http://localhost:3000/tasks/${taskId}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        console.log('> TaskController -> deleteTask: response =', response.ok);
+        if (response.ok) {
+          this.#model.deleteTaskById(taskId);
         }
       })
       .catch((e) => {
-        window.alert('Server error:' + e.toString());
-        return [];
+        console.error('> TaskController -> deleteTask: error =', e);
+        throw new Error(e.toString());
       });
-  } catch (error) {
-    throw error;
   }
-}
-
-deleteTask(taskId) {
-  console.log('> TasksController -> deleteTask: taskId =', taskId);
-  return fetch(`http://localhost:3000/tasks/${taskId}`, {
-    method: 'DELETE'
-  }).then((response) => {
-    console.log('> TasksController -> deleteTask: response =', response.ok);
-    if (response.ok){
-      this.#model.addTask(taskVO);
-    }
-  })
-
-    .catch((e) => {
-      console.error('> TaskController -> createTask: error =', e);
-      throw new Error(e. toString());
-    });
 
   createTask(taskTitle, taskDate, taskTags) {
-    console.log('> Create task -> On Confirm');
-
+    console.log('> TasksController -> createTask');
     return fetch('http://localhost:3000/tasks', {
       method: 'POST',
       headers: {
@@ -67,15 +67,8 @@ deleteTask(taskId) {
       })
       .catch((e) => {
         console.error('> TaskController -> createTask: error =', e);
-        throw new Error(e. toString());
+        throw new Error(e.toString());
       });
-  }
-
-
-    // renderTask(taskVO);
-    // tasks.push(taskVO);
-    //
-    // saveTask();
   }
 }
 

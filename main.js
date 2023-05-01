@@ -2,12 +2,13 @@ import 'uno.css';
 import '@unocss/reset/tailwind.css';
 import 'toastify-js/src/toastify.css';
 import DOM from './src/constants/dom';
+
 import { delay } from './src/utils/timeUtils.js';
-import TasksModel from './src/mvc/model/TasksModel.js';
-import TaskVO from './src/mvc/model/vo/TaskVO.js';
-import TasksController from './src/mvc/controller/TasksController.js';
-import tasksController from './src/mvc/controller/TasksController.js';
+
 import Toastify from 'toastify-js';
+
+import TasksModel from './src/mvc/model/TasksModel.js';
+import TasksController from './src/mvc/controller/TasksController.js';
 
 const KEY_LOCAL_TASKS = 'tasks';
 
@@ -20,7 +21,7 @@ const domTemplateTask = getDOM(DOM.Template.TASK);
 const domTaskColumn = domTemplateTask.parentNode;
 
 const tasksModel = new TasksModel();
-const taskController = new TasksController(tasksModel);
+const tasksController = new TasksController(tasksModel);
 
 domTemplateTask.removeAttribute('id');
 domTemplateTask.remove();
@@ -33,19 +34,20 @@ function renderTask(taskVO) {
   return domTaskClone;
 }
 
-const showToast = (text) =>
+const showToastWithText = (text) =>
   Toastify({
-    text: text,
+    text,
     duration: 3000,
     close: true,
   }).showToast();
 
 async function main() {
   tasksModel.addUpdateCallback((tasks) => {
+    console.log('> addUpdateCallback: ', tasks);
     domTaskColumn.innerHTML = '';
     tasks.forEach((taskVO) => renderTask(taskVO));
   });
-  taskController
+  tasksController
     .retrieveTasks()
     .then(() => {})
     .catch((e) => {});
@@ -58,22 +60,20 @@ async function main() {
         'Create',
         (taskTitle, taskDate, taskTags) => {
           console.log('> Create task -> On Confirm');
-          taskController
+          tasksController
             .createTask(taskTitle, taskDate, taskTags)
             .then((taskVO) => {
-              console.log('> Create task -> On Confirm: - Success');
-              Toastify({
-                text: `You task saved: ${taskVO.title}`,
-              }).showToast();
+              console.log('> Create task -> On Confirm: Success');
+              showToastWithText(`You task saved: ${taskVO.title}`);
             })
             .catch((error) => {
-              console.log('Create task -> On Confirm: - Error =', error);
+              console.log('> Create task -> On Confirm: Error =', error);
               window.alert(`Error on server: ${error.toString()}`);
             });
         }
       );
     },
-    [DOM.Template.Task.BTN_DELETE]: (taskId, domTask) => {
+    [DOM.Template.Task.BTN_DELETE]: (taskId) => {
       const taskVO = tasksModel.getTaskById(taskId);
       renderTaskPopup(
         taskVO,
@@ -85,11 +85,10 @@ async function main() {
             taskDate,
             taskTag,
           });
-
           tasksController
             .deleteTask(taskId)
             .then(() => {
-              showToastWithText(` Task deleted: ${taskVO.title}`);
+              showToastWithText(`Task deleted: ${taskVO.title}`);
             })
             .catch((e) => {});
         }
@@ -138,72 +137,69 @@ async function main() {
     } while (!taskId);
 
     const taskOperation = taskOperations[taskBtn];
-    if (taskOperation) {
-      taskOperation(taskId, domTask);
-    }
+    if (taskOperation) taskOperation(taskId);
   };
 
-  getDOM(DOM.Button.CREATE_TASK).onclick =
-    taskOperations[DOM.Button.CREATE_TASK];
-
-  console.log('> domPopupCreateTask.classList');
-}
-
-async function renderTaskPopup(
-  taskVO,
-  popupTitle,
-  confirmText,
-  processDataCallback
-) {
-  const domPopupContainer = getDOM(DOM.Popup.CONTAINER);
-  const domSpinner = domPopupContainer.querySelector('.spinner');
-
-  domPopupContainer.classList.remove('hidden');
-
-  const onClosePopup = () => {
-    document.onkeyup = null;
-    domPopupContainer.children[0].remove();
-    domPopupContainer.append(domSpinner);
-    domPopupContainer.classList.add('hidden');
-  };
-
-  const TaskPopup = (await import('./src/mvc/view/popup/TaskPopup')).default;
-  const taskPopupInstance = new TaskPopup(
-    popupTitle,
-    Tags,
-    confirmText,
-    (taskTitle, taskDate, taskTags) => {
-      console.log('Main -> renderTaskPopup: confirmCallback', {
-        taskTitle,
-        taskDate,
-        taskTags,
-      });
-      processDataCallback(taskTitle, taskDate, taskTags);
-      onClosePopup();
-    },
-    onClosePopup
+  getDOM(DOM.Button.CREATE_TASK).addEventListener('click', (e) =>
+    taskOperations[DOM.Button.CREATE_TASK]()
   );
 
-  if (taskVO) {
-    taskPopupInstance.taskTitle = taskVO.title;
+  async function renderTaskPopup(
+    taskVO,
+    popupTitle,
+    confirmText,
+    processDataCallback
+  ) {
+    const domPopupContainer = getDOM(DOM.Popup.CONTAINER);
+    const domSpinner = domPopupContainer.querySelector('.spinner');
+
+    domPopupContainer.classList.remove('hidden');
+
+    const onClosePopup = () => {
+      document.onkeyup = null;
+      domPopupContainer.children[0].remove();
+      domPopupContainer.append(domSpinner);
+      domPopupContainer.classList.add('hidden');
+    };
+
+    const TaskPopup = (await import('./src/mvc/view/popup/TaskPopup')).default;
+    const taskPopupInstance = new TaskPopup(
+      popupTitle,
+      Tags,
+      confirmText,
+      (taskTitle, taskDate, taskTags) => {
+        console.log('Main -> renderTaskPopup: confirmCallback', {
+          taskTitle,
+          taskDate,
+          taskTags,
+        });
+        processDataCallback(taskTitle, taskDate, taskTags);
+        onClosePopup();
+      },
+      onClosePopup
+    );
+
+    if (taskVO) {
+      taskPopupInstance.taskTitle = taskVO.title;
+    }
+
+    delay(1000).then(() => {
+      console.log('render 1');
+      domSpinner.remove();
+      document.onkeyup = (e) => {
+        if (e.key === 'Escape') {
+          onClosePopup();
+        }
+      };
+      domPopupContainer.append(taskPopupInstance.render());
+    });
+
+    console.log('render 0');
   }
 
-  delay(1000).then(() => {
-    console.log('render 1');
-    domSpinner.remove();
-    document.onkeyup = (e) => {
-      if (e.key === 'Escape') {
-        onClosePopup();
-      }
-    };
-    domPopupContainer.append(taskPopupInstance.render());
-  });
-
-  console.log('render 0');
-}
-
-function saveTask() {
-  localStorage.setItem(KEY_LOCAL_TASKS, JSON.stringify(tasks));
+  function saveTask() {
+    localStorage.setItem(KEY_LOCAL_TASKS, JSON.stringify(tasks));
+  }
 }
 
 main();
