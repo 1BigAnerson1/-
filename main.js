@@ -43,26 +43,16 @@ const planets = [
   new Planet(200, 200, 30, 'gold', 96),
 ];
 
-const planets = [
-  new Planet(100, 200),
-  new Planet(200, 200),
-  new Planet(300, 100),
-  new Planet(200, 300),
-];
+let planet;
 
 const render = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
 
   for (const planetIndex in planets) {
-    let planet = planets[planetIndex];
-    planet.x = R * Math.sin(alpha) + planet.pX;
-    planet.y = R * Math.sin(alpha) + planet.pY;
-    alpha += (SPEED_MULT * Math.PI) / 180;
-    ctx.fillStyle = 'red';
-    ctx.arc(x, y, 50, 0, Math.PI * 2);
+    planet = planets[planetIndex];
+    planet.move();
+    planet.render(ctx);
   }
-  ctx.fill();
   window.requestAnimationFrame(render);
 };
 window.requestAnimationFrame(render);
