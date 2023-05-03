@@ -3,38 +3,40 @@ const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
 class Planet {
   x;
   y;
-
+  size;
   pX;
-
   pY;
-
   atmosphere;
-
   radius;
+  alpha;
 
-  constructor(x, y, size, atmosphere = 'red', radius = 50) {
+  constructor(x, y, size = 10, atmosphere = 'red', radius = 50) {
     this.size = size;
     this.pX = x;
     this.pY = y;
     this.atmosphere = atmosphere;
     this.radius = radius;
+    this.alpha = 0;
+  }
+
+  move() {
+    this.x = this.radius * Math.sin(this.alpha) + this.pX;
+    this.y = this.radius * Math.cos(this.alpha) + this.pY;
+    this.alpha += (0.1 * Math.PI) / 1;
   }
 
   render(ctx) {
     ctx.beginPath();
     ctx.fillStyle = this.atmosphere;
-    ctx.arc(this.x, this.y, 50, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.size, 50, 0, Math.PI * 2);
     ctx.fill();
     ctx.closePath();
   }
 }
-
-let SPEED_MULT = 0.2;
-
-let alpha = 0;
 
 const planets = [
   new Planet(200, 200, 30, 'red', 80),
