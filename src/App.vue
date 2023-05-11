@@ -3,48 +3,42 @@ import MyName from './components/MyName.vue';
 </script>
 
 <template>
-  <select
-    name="status"
-    @change="onSelectChange"
+  <h3>Todo List</h3>
+  <input
+    v-model="inputText"
+    @keyup.enter="canAddItemToTheList && onInputEnterKeyUp()"
   >
-    <option
-      v-if="!status"
-      value="unselected"
-      selected
-    >
-      Unselected
-    </option>
-    <option
-      v-for="item in ['Ready', 'Start', 'Stop']"
+  <div>
+    List:
+    <div
+      v-for="(item, index) in todos"
       :key="item"
-      :value="item"
-      :selected="item === status"
     >
-      {{ item }}
-    </option>
-  </select>
-  <MyName
-    :status="status"
-    @reset="onStatusReset"
-  />
+      ({{ index + 1 }}) {{ item }}
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    status: null
+    inputText: '',
+    todos: []
   }),
-  methods: { 
-    onSelectChange(event) {
-      console.log('>App -> onSelectChange:', event.target.value);
-      this.status = event.target.value;
+  computed: {
+    canAddItemToTheList () {
+      return this.inputText?.length > 0;
     },
-    onStatusReset () {
-      console.log('>App -> onSelectChange:', event.target.value);
-      this.status = null;
+    todoText() { return this.inputText.trim();}
+  },
+  methods: {
+    onInputEnterKeyUp() {
+      console.log('> App -> onInputEnterKeyUp:', this.inputText),
+      this.todos.push(this.inputText);
+      this.inputText ='';
+      }
     }
-  }
-};
+ };
 </script>
 
 <style scoped>
