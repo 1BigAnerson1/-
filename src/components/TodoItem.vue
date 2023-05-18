@@ -1,6 +1,5 @@
 <script setup>
-import  {onMounted} from 'vue';
-
+import {computed, onMounted} from 'vue';
 
 const props = defineProps( {
   index: {
@@ -13,36 +12,21 @@ const props = defineProps( {
  }
 });
 defineEmits(['delete']);
+
+const pathToEdit = computed(() => `/todos/${props.index}`);
+
 onMounted (() => {
-  console.log ('> TodoItem -> props.text =', props.text);
+  console.log ('> TodoItem -> onMounted: props.text =', props.text);
 });
 </script>
 <template>
   <div>
-    ({{ index }}) {{ text }}
+    ({{ index }})
+    <router-link :to="pathToEdit">
+      {{ text }}
+    </router-link>
     <button @click="$emit('delete')">
       x
     </button>
   </div>
 </template>
-
-<!--<script>-->
-<!--export default {-->
-<!--  name: 'TodoItem',-->
-<!--  props: {-->
-<!--    index: {-->
-<!--      type:Number,-->
-<!--      default: 0-->
-<!--    },-->
-<!--    text: {-->
-<!--      type: String,-->
-<!--      default: '-'-->
-<!--    }-->
-<!--  },-->
-<!--  emits: ['delete']-->
-<!--};-->
-
-<!--</script>-->
-<style scoped>
-
-</style>

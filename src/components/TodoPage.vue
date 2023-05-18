@@ -2,13 +2,13 @@
 import {computed, onMounted, ref, watch} from 'vue';
 import TodoItem from './TodoItem.vue';
 import {parseLocalStorage, saveToLocalStorage} from '../storageUtils.js';
+import {todos} from '../store/todosStore.js';
 
 const LOCAL_KEY_TODOS = 'todo';
 const LOCAL_KEY_INPUT_TEXT = 'input_text';
 
 const user = ref( {name: 'Anderson' });
 const inputText = ref(parseLocalStorage(LOCAL_KEY_INPUT_TEXT, ''));
-const todos = ref(parseLocalStorage(LOCAL_KEY_TODOS,  []));
 
 const canAddItemToTheList = computed (() => true);
 const getTodoText = computed(()=> inputText.value?.trim());
