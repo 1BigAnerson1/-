@@ -13,6 +13,7 @@ const props = defineProps( {
 });
 defineEmits(['delete']);
 
+
 const pathToEdit = computed(() => `/todos/${props.index}`);
 
 onMounted (() => {

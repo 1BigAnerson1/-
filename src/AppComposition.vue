@@ -3,6 +3,7 @@ import {onMounted, ref} from 'vue';
 import AppHeader from './AppHeader.vue';
 
 const user = ref( {name: 'Anderson' });
+const header = ref(null);
 
 onMounted(() => {
   console.log('> App -> onMounted');
