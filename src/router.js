@@ -15,7 +15,19 @@ const router = createRouter({
             path: '/todos/:id',
             component: () => import('./components/TodoEditPage.vue')
         },
+        {
+            path: '/signin',
+            component: () => import('./components/SigninPage.vue')
+        },
     ],
+});
+
+router.beforeEach((to, from, next) => {
+    console.log('> router -> beforeEach', to.path);
+    const publicPages = ['/', '/signin'];
+    const notAllowedNavigation = publicPages.indexOf(to.path) < 0 && !useUserStore().hasUser;
+    if (notAllowedNavigation) next({path: '/signin'});
+    else next();
 });
 
 export default router;
