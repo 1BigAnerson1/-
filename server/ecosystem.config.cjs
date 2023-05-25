@@ -5,7 +5,14 @@ module.exports = {
     env: {
       NODE_ENV: 3000
     }
-  }],
+  },
+    {
+      script: 'user-sqlite.cjs',
+      watch: true,
+      env: {
+        NODE_ENV: 3001
+      }
+    }],
 
   deploy : {
     production : {

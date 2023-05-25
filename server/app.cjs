@@ -21,10 +21,10 @@ app.get('/hello', async (req,res) => {
     let { name } = req.query;
     if (!name) name = 'unknown'
     res.send(
-<header>
-    <h2>Hello ${name}!</h2>
-</header>
-);
+`<header>
+        <h2>Hello ${name}!</h2>
+    </header>`
+    );
 });
 
 
