@@ -18,14 +18,15 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/hello', async (req,res) => {
-    const { name } = req.query;
-    res.send('Hello ${name}!');
+    let { name } = req.query;
+    if (!name) name = 'unknown'
+    res.send(
+<header>
+    <h2>Hello ${name}!</h2>
+</header>
+);
 });
 
-
-app.use((req, res, next) => {
-    res.status(404).send("Sorry can't find that!")
-});
 
 app.post('/upload', function(req, res) {
     console.log(req.files); // the uploaded file object
@@ -40,8 +41,11 @@ app.post('/upload', function(req, res) {
     });
 });
 
+app.use((req, res, next) => {
+    res.status(404).send("Sorry can't find that!")
+});
+
+
 app.listen(process.env.NODE_PORT || 3000, () => {
     console.log(`Example app listening`);
-
-
 });
