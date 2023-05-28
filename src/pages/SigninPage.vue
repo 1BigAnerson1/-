@@ -1,7 +1,8 @@
 <script setup>
+import RegistrationForm from '@/components/RegistrationForm.vue';
 </script>
 <template>
   <div>
-    Sign In Page
+    <RegistrationForm />
   </div>
 </template>

@@ -1,25 +1,23 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 
-const props = withDefaults(defineProps<{
-  registration: boolean
-  title: string
-  errors: string[]
-}>(), {
-  registration: false,
+const props = defineProps({
+  registration: { type: Boolean, default: false },
+  title: { type: String, default: '' },
+  errors: { type: Array, default: () => [] },
 });
 
-const emit = defineEmits(['login', 'register'])
+const emit = defineEmits(['login', 'register']);
 
-const inputUsername = ref<HTMLInputElement | null>(null);
-const inputPassword = ref<HTMLInputElement | null>(null);
-const inputConfirm = ref<HTMLInputElement | null>(null);
+const inputUsername = ref(null);
+const inputPassword = ref(null);
+const inputConfirm = ref(null);
 
-const checkPasswordsMatch = (): boolean => inputPassword.value!.value === inputConfirm.value?.value;
+const checkPasswordsMatch = () => inputPassword.value.value === inputConfirm.value?.value;
 
 const onSendClick = async () => {
-  const username = inputUsername.value!.value || '';
-  const password = inputPassword.value!.value || '';
+  const username = inputUsername.value.value || '';
+  const password = inputPassword.value.value || '';
   const dto = { username, password };
   const canRegister = props.registration && checkPasswordsMatch();
   console.log('> RegistrationForm -> onSendClick', canRegister);
@@ -30,34 +28,47 @@ const onSendClick = async () => {
   }
 };
 </script>
-
 <template>
-  <h1>{{ props.title }}</h1>
-  <hr />
-  <div v-if="props.errors.length > 0">
-    <div v-for="(error, index) in errors" :key="index" style="color: red;">
+  <h1>{{ title }}</h1>
+  <hr>
+  <div v-if="errors.length > 0">
+    <div
+      v-for="(error, index) in errors"
+      :key="index"
+      style="color: red;"
+    >
       <small>{{ error }}</small>
     </div>
-    <hr />
+    <hr>
   </div>
   <div>
     <label for="username">Username:</label>
-    <input ref="inputUsername" id="username" />
+    <input
+      id="username"
+      ref="inputUsername"
+    >
   </div>
   <div>
     <label for="password">Password:</label>
-    <input ref="inputPassword" id="password" />
+    <input
+      id="password"
+      ref="inputPassword"
+    >
   </div>
-  <div v-if="props.registration">
+  <div v-if="registration">
     <label for="confirm">Confirm:</label>
-    <input ref="inputConfirm" id="confirm" />
+    <input
+      id="confirm"
+      ref="inputConfirm"
+    >
   </div>
   <div style="margin: 1rem 0;">
-    <button @click="onSendClick">Send</button>
+    <button @click="onSendClick">
+      Send
+    </button>
   </div>
   <div>
-    <slot/>
+    <slot />
   </div>
 </template>
-
 <style scoped></style>
