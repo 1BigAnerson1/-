@@ -27,7 +27,7 @@
 
 <script>
 import TodoItem from './components/TodoItem.vue';
-import AppHeader from './AppHeader.vue';
+import AppHeader from './components/AppHeader.vue';
 
 const LOCAL_KEY_TODOS = 'todo';
 const LOCAL_KEY_INPUT_TEXT = 'input_text';

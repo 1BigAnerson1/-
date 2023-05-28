@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from 'vue';
-import AppHeader from './AppHeader.vue';
+import AppHeader from './components/AppHeader.vue';
 import {storeToRefs} from 'pinia';
 import {useUserStore} from './store/userStore.js';
 

@@ -1,23 +1,25 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
+import ROUTES from './constants/routes.js';
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
         {
-            path: '/',
-            component: () => import('./components/IndexPage.vue')
+            path: ROUTES.INDEX,
+            component: () => import('./pages/IndexPage.vue')
         },
         {
-            path:'/todos',
-            component: () => import('./components/TodoPage.vue')
+            path: ROUTES.TODOS,
+            component: () => import('./pages/todo/TodoPage.vue')
         },
         {
-            path: '/todos/:id',
-            component: () => import('./components/TodoEditPage.vue')
+            path: ROUTES.TODOS_ID,
+            component: () => import('./pages/todo/TodoEditPage.vue')
         },
         {
-            path: '/signin',
-            component: () => import('./components/SigninPage.vue')
+            name: 'Signin',
+            path: ROUTES.SIGNIN,
+            component: () => import('./pages/SigninPage.vue')
         },
     ],
 });
