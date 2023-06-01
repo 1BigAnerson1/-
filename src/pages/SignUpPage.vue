@@ -30,10 +30,14 @@ const onRegister = (dto) => {
     }).catch ((error) => {
       console.log('SignUpPage - onRegister: error =', error);
       const errorData = error.data.data;
-      for (const errorKey in errorData) {
-        const errorValue = errorData[errorKey];
-        console.log('> errorValue', errorValue);
-        errors.value.push(errorValue.message);
+      if (errorData) {
+        for (const errorKey in errorData) {
+          const errorValue = errorData[errorKey];
+          console.log('> errorValue', errorValue);
+          errors.value.push(errorValue.message);
+        }
+      } else {
+        errors.value.push(error.message);
       }
     });
   }
