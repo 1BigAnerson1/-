@@ -2,8 +2,7 @@
 import RegistrationForm from '@/components/RegistrationForm.vue';
 import ROUTES from '@/constants/routes.js';
 import PROVIDE from '@/constants/provides.js';
-import  {inject} from 'vue';
-
+import {inject, ref} from 'vue';
 
 const pb = inject (PROVIDE.PB);
 const isSuccess = ref(false);
@@ -13,6 +12,7 @@ const onLogin = (dto) => {
       dto.username,
       dto.password,
   ).then(() => {
+    isSuccess.value = true;
   });
 };
 

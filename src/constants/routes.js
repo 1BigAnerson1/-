@@ -1,7 +1,8 @@
 const ROUTES = {
     INDEX: '/',
     TODOS: '/todos',
-    
+    BOOKS: '/books',
+
     TODOS_ID: '/todos/:id',
     SIGNIN: '/signin',
     SIGNUP: '/signup',
