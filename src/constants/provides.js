@@ -1,4 +1,5 @@
 const PROVIDE = {
-  PB: 'pb'
+  PB: 'pb',
+  DB: 'db'
 };
 export default PROVIDE;

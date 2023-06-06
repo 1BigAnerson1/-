@@ -14,9 +14,12 @@ import PROVIDE from '@/constants/provides.js';
 const pb = new PocketBase(import.meta.env.VITE_SERVER_PATH);
 console.log('pb.authStore.isValid:', pb.authStore.isValid);
 
-let db = new PouchDB ('http://127.0.0.1:5984/books');
+let db = new PouchDB(`${import.meta.env.VITE_SERVER_DB_PATH}/books`);
+console.log(db);
 db.get('book1').then((doc) => {
     console.log('doc', doc);
+}).catch((e) => {
+    console.log('get book1 error', e);
 });
 
 db.changes({
@@ -38,5 +41,6 @@ console.log(db);
 createApp(AppComposition)
     .use(createPinia().use(piniaPluginPersistedState))
     .provide(PROVIDE.PB, pb)
+    .provide(PROVIDE.DB, db)
     .use(router)
     .mount('#app');
