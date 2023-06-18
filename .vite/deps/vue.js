@@ -4116,7 +4116,7 @@ var PublicInstanceProxyHandlers = {
       setupState[key] = value;
       return true;
     } else if (setupState.__isScriptSetup && hasOwn(setupState, key)) {
-      warn2(`Cannot mutate <script setup> binding "${key}" from Options API.`);
+      warn2(`Cannot mutate <script setup lang="ts"> binding "${key}" from Options API.`);
       return false;
     } else if (data !== EMPTY_OBJ && hasOwn(data, key)) {
       data[key] = value;

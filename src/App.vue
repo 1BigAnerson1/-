@@ -1,24 +1,16 @@
 <script setup>
-import {computed, inject, onMounted, reactive, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import AppHeader from '@/components/AppHeader.vue';
-import {storeToRefs} from 'pinia';
-import {useUserStore} from '@/store/userStore.js';
-import PROVIDE from '@/constants/provides.js';
 import ROUTES from '@/constants/routes.js';
-import {useRoute} from 'vue-router';
 import AppMenu from '@/pages/AppMenu.vue';
 import gql from 'graphql-tag';
 import {useQuery} from '@vue/apollo-composable';
+import {useRoute} from "vue-router";
+import {useUserStore} from "@/store/userStore";
+import {storeToRefs} from "pinia";
 
-const pb = inject(PROVIDE.PB);
-const user = ref(pb.authStore.model);
-pb.authStore.onChange((token, model) => {
-  user.value = model;
-});
-const hasUser = computed(() => !!user.value);
-
-
-const checkRouteIsNotCurrent = (routePath) => useRoute().path !== routePath;
+const userStore = useUserStore();
+const {user, hasUser } = storeToRefs(useUserStore);
 
 const { result: usersData, loading: isUserLoading } = useQuery(gql`
   query getUsers {
@@ -29,13 +21,14 @@ const { result: usersData, loading: isUserLoading } = useQuery(gql`
   }
 `);
 
+const checkRouteIsNotCurrent = (rouutPath: any) => useRoute().path !== rouutPath;
+
 const menuLinks = reactive([
   { name: 'Index', link: ROUTES.INDEX, canRender: computed(() => checkRouteIsNotCurrent(ROUTES.INDEX)) },
   { name: 'Books', link: ROUTES.BOOKS, canRender: computed(() => hasUser.value && checkRouteIsNotCurrent(ROUTES.BOOKS)) },
   { name: 'Sign In', link: ROUTES.SIGNIN, canRender: computed(() => !hasUser.value && checkRouteIsNotCurrent(ROUTES.SIGNIN)) },
   { name: 'Sign Out', link: ROUTES.INDEX, canRender: computed(() => hasUser.value), onClick: () => {
       console.log('SignOUT');
-      pb.authStore.clear();
     },
   }
 ]);
@@ -51,7 +44,7 @@ const menuLinks = reactive([
       {{ usersData.user }}
     </div>
     <template #sub-header>
-      <span v-if="hasUser">created by {{ user.username }}</span>
+      <span v-if="hasUser">created by {{ user.name }}</span>
       <span v-else>noname</span>
     </template>
   </AppHeader>

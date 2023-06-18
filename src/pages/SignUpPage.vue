@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 
 import {inject, ref} from 'vue';
 
@@ -6,7 +6,7 @@ import ROUTES from '@/constants/routes.js';
 import PROVIDE from '@/constants/provides.js';
 
 import RegistrationForm from  '@/components/RegistrationForm.vue';
-import router from '@/router.js';
+import router from '@/router.ts';
 
 const pb = inject(PROVIDE.PB);
 const errors = ref([]);

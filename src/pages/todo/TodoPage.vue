@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed, onMounted, ref, watch} from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
 import {parseLocalStorage, saveToLocalStorage} from '@/storageUtils.js';
